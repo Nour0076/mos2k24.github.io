@@ -167,7 +167,7 @@
         });
     </script>
     <script>
-        const form = document.querySelector('registration-form');
+        const form = document.querySelector('#registration-form');
         
         form.addEventListener('submit', function (event) {
             event.preventDefault(); // Prevent the form from submitting normally
@@ -186,7 +186,8 @@
                 faciExpectation: formData.get('faciExpectation'),
                 chairExpectation: formData.get('chairExpectation'),
                 freeSpace: formData.get('freeSpace'),
-                signature: document.getElementById('signature-pad').toDataURL() // Get the signature as a base64 string
+               signature: document.getElementById('signature-pad').toDataURL()
+
             };
             
             // Send the data to Google Apps Script using Fetch API
