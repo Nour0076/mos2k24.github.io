@@ -189,13 +189,7 @@ document.getElementById('registration-form').addEventListener('submit', async fu
     const result = await response.json();
     if (result.status === 'success') {
       alert('Form submitted successfully!');
-    } else {
-      alert('Error submitting form!');
     }
-  } catch (error) {
-    console.error('Error:', error);
-    alert('Error submitting form!');
-  }
 });
 
     </script>
