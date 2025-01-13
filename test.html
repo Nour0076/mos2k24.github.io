@@ -1,0 +1,204 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/CustomEase.min.js"></script>
+
+  <title>Document</title>
+  <style>
+
+.slider-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+.slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  will-change: opacity, transform;
+  z-index: 1;
+  /* Ensure no white space during transitions */
+  transform-origin: center center;
+}
+.slide.active {
+  z-index: 2;
+}
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.2);
+  z-index: 3;
+  pointer-events: none;
+}
+.navigation {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  z-index: 10;
+}
+.nav-btn {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.4);
+  margin: 0 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.nav-btn.active {
+  background: white;
+  transform: scale(1.5);
+}
+
+  </style>
+</head>
+<body>
+  <div class="slider-container">
+    <div class="slide" style="background-image: url('img/1.jpg')"></div>
+    <div class="slide" style="background-image: url('https://picsum.photos/1600/900?random=2')"></div>
+    <div class="slide" style="background-image: url('https://picsum.photos/1600/900?random=3')"></div>
+    <div class="slide" style="background-image: url('https://picsum.photos/1600/900?random=4')"></div>
+    <div class="overlay"></div>
+  </div>
+  
+  <div class="navigation"></div>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+  // Advanced Slider Configuration
+  const CONFIG = {
+    transitionDuration: 2, // longer, smoother transition
+    zoomIntensity: 1.05, // minimal zoom to prevent white space
+    autoAdvanceInterval: 5000
+  };
+
+  // Create custom smooth ease
+  const smoothEase = CustomEase.create(
+    "professional",
+    "M0,0 C0.25,0.1 0.25,1 1,1"
+  );
+
+  const sliderContainer = document.querySelector(".slider-container");
+  const slides = document.querySelectorAll(".slide");
+  const navigation = document.querySelector(".navigation");
+
+  // Create navigation dots
+  slides.forEach((_, index) => {
+    const dot = document.createElement("div");
+    dot.classList.add("nav-btn");
+    if (index === 0) dot.classList.add("active");
+    dot.addEventListener("click", () => goToSlide(index));
+    navigation.appendChild(dot);
+  });
+
+  const navBtns = document.querySelectorAll(".nav-btn");
+  let currentSlide = 0;
+  let isTransitioning = false;
+
+  function createProfessionalTransition(oldSlide, newSlide) {
+    // Remove active states
+    slides.forEach((slide) => slide.classList.remove("active"));
+
+    // Prepare timeline
+    const tl = gsap.timeline({
+      onComplete: () => {
+        isTransitioning = false;
+        newSlide.classList.add("active");
+      }
+    });
+
+    // Professional dissolve transition with minimal scaling
+    tl.to(oldSlide, {
+      opacity: 0,
+      scale: CONFIG.zoomIntensity,
+      duration: CONFIG.transitionDuration,
+      ease: smoothEase
+    });
+
+    tl.fromTo(
+      newSlide,
+      {
+        opacity: 0,
+        scale: CONFIG.zoomIntensity - 0.05 // Slight difference to prevent white space
+      },
+      {
+        opacity: 1,
+        scale: 1,
+        duration: CONFIG.transitionDuration,
+        ease: smoothEase
+      },
+      0 // Simultaneous transition
+    );
+
+    return tl;
+  }
+
+  function goToSlide(newIndex) {
+    // Prevent multiple transitions
+    if (isTransitioning || newIndex === currentSlide) return;
+
+    isTransitioning = true;
+
+    // Update navigation
+    navBtns[currentSlide].classList.remove("active");
+    navBtns[newIndex].classList.add("active");
+
+    // Perform transition
+    createProfessionalTransition(slides[currentSlide], slides[newIndex]);
+
+    currentSlide = newIndex;
+  }
+
+  // Auto-advance functionality
+  function autoAdvance() {
+    let nextSlide = (currentSlide + 1) % slides.length;
+    goToSlide(nextSlide);
+  }
+
+  // Initial setup
+  slides.forEach((slide, index) => {
+    gsap.set(slide, {
+      opacity: index === 0 ? 1 : 0,
+      scale: 1
+    });
+  });
+  slides[0].classList.add("active");
+
+  // Start auto-advance
+  let autoAdvanceTimer = setInterval(autoAdvance, CONFIG.autoAdvanceInterval);
+
+  // Keyboard navigation
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "ArrowRight") {
+      goToSlide((currentSlide + 1) % slides.length);
+    } else if (e.key === "ArrowLeft") {
+      goToSlide((currentSlide - 1 + slides.length) % slides.length);
+    }
+  });
+
+  // Pause on hover
+  sliderContainer.addEventListener("mouseenter", () => {
+    clearInterval(autoAdvanceTimer);
+  });
+  sliderContainer.addEventListener("mouseleave", () => {
+    autoAdvanceTimer = setInterval(autoAdvance, CONFIG.autoAdvanceInterval);
+  });
+});
+
+  </script>
+</body>
+</html>

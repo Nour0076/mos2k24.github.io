@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://db.onlinewebfonts.com/c/97c4b25dc74e0ab045154e75a8fdd69d?family=Game+of+Thrones" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/main.css">
+    <title>MOS2K24</title>
+    
+</head>
+<body>
+
+    <nav id="navbar">
+        <a href="#" id="logo">
+            <img src="img/logo.png" alt="Logo" style="max-height: 50px;">
+        </a>
+        <div id="menu-toggle">&#9776;</div> <div id="nav-links">
+            <a href="#">Home</a>
+            <a href="#">Registration</a>
+            <a href="#">OC Team</a>
+            <a href="#">Memories</a>
+        </div>
+        <div id="mobile-menu">
+            <a href="#">Home</a>
+            <a href="#">Registration</a>
+            <a href="#">OC Team</a>
+            <a href="#">Memories</a>
+        </div>
+    </nav>
+    <main>
+    <div id="form-container">
+        <form>
+            <div class="mb-3">
+            <label for="name" style="color: #b08d2a;" class="form-label">Name</label>
+                <input type="text" class="form-control" id="name" placeholder="Enter your name">
+            </div>
+            <div class="mb-3">
+                <label style="color: #b08d2a;" for="email" class="form-label">Email address</label>
+                <input type="email" class="form-control" id="email" placeholder="Enter your email">
+            </div>
+            <div class="mb-3">
+                <label style="color: #b08d2a;" for="email" class="form-label">Phone Number</label>
+                <input type="email" class="form-control" id="email" placeholder="Enter your Phone Number">
+            </div>
+            <div class="mb-3">
+                <label style="color: #b08d2a;" for="email" class="form-label">Emergency Phone Number</label>
+                <input type="email" class="form-control" id="email" placeholder="Enter your Emergency Phone Number">
+            </div>
+            <div class="mb-3">
+                <label style="color: #b08d2a;" for="subject" class="form-label">Departement</label>
+                <div class="custom-select">
+                    <div class="select-button" id="selectButton">Select</div>
+                    <div class="select-options" id="selectOptions">
+                        <div class="option" data-value="IGV">IGV</div>
+                        <div class="option" data-value="OGV">OGV</div>
+                        <div class="option" data-value="IGT">IGT</div>
+                        <div class="option" data-value="OGT">OGT</div>
+                        <div class="option" data-value="MKT&IM">MKT&IM</div>
+                        <div class="option" data-value="BD&EWA">BD&EWA</div>
+                        <div class="option" data-value="TM">TM</div>
+                    </div>
+                    <input type="hidden" id="selectedValue" name="subject" value="">
+                </div>
+            </div>
+            <div class="mb-3">
+                <label style="color: #b08d2a;" for="email" class="form-label">Allergy</label>
+                <input type="email" class="form-control" id="email" placeholder="Enter your Allergy">
+            </div>
+            <div class="mb-3">
+                <label style="color: #b08d2a;" for="email" class="form-label">OC Expectation</label>
+                <input type="email" class="form-control" id="email" placeholder="Enter OC Expectation">
+            </div>
+            <div class="mb-3">
+                <label style="color: #b08d2a;" for="email" class="form-label">FACI Expectation</label>
+                <input type="email" class="form-control" id="email" placeholder="Enter FACI Expectation">
+            </div>
+            <div class="mb-3">
+                <label style="color: #b08d2a;" for="email" class="form-label">Chair Expectation</label>
+                <input type="email" class="form-control" id="email" placeholder="Enter Chair Expectation">
+            </div>
+            
+            <div class="mb-3">
+                <label style="color: #b08d2a;" for="message" class="form-label">Free Space</label>
+                <textarea class="form-control" id="message" rows="5" placeholder="Enter your message"></textarea>
+            </div>
+            <div class="mb-3 form-check">
+                <input type="checkbox" class="form-check-input" id="terms">
+                <label style="color: white;" class="form-check-label" for="terms">I agree to the <a href="_Indemnity Form MOS 2k24.pdf" style="color:rgb(212, 175, 55); text-decoration: none;" target="_blank">Terms of Use</a></label>
+            </div>
+            <label style="color: #b08d2a;" for="subject" class="form-label">Signature</label>
+            <div  id="signature-box">
+                <canvas id="signature-pad" width="400" height="200"></canvas>
+                <button id="clear-btn">Clear</button>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Submit</button>
+        </form>
+    </div>
+</main>
+
+    <script>
+        const menuToggle = document.getElementById('menu-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        menuToggle.addEventListener('click', () => {
+            mobileMenu.style.display = mobileMenu.style.display === 'block' ? 'none' : 'block';
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const selectButton = document.getElementById('selectButton');
+        const selectOptions = document.getElementById('selectOptions');
+        const selectedValue = document.getElementById('selectedValue');
+        const options = selectOptions.querySelectorAll('.option');
+
+        selectButton.addEventListener('click', () => {
+            selectOptions.classList.toggle('show');
+        });
+
+        options.forEach(option => {
+            option.addEventListener('click', () => {
+                selectButton.textContent = option.textContent;
+                selectedValue.value = option.dataset.value;
+                selectOptions.classList.remove('show');
+            });
+        });
+        document.addEventListener('click', (event) => {
+          if (!selectButton.contains(event.target) && !selectOptions.contains(event.target)) {
+            selectOptions.classList.remove('show');
+          }
+        });
+    </script>
+    <script>
+        const canvas = document.getElementById('signature-pad');
+        const context = canvas.getContext('2d');
+        let drawing = false;
+    
+        // Set initial drawing properties
+        context.lineWidth = 3;
+        context.lineCap = 'round';
+        context.strokeStyle = '#D4AF37'; // Gold color for signature
+    
+        // Start drawing
+        canvas.addEventListener('mousedown', (e) => {
+            drawing = true;
+            context.beginPath();
+            context.moveTo(e.offsetX, e.offsetY);
+        });
+    
+        // Draw on canvas
+        canvas.addEventListener('mousemove', (e) => {
+            if (drawing) {
+                context.lineTo(e.offsetX, e.offsetY);
+                context.stroke();
+            }
+        });
+    
+        // Stop drawing
+        canvas.addEventListener('mouseup', () => {
+            drawing = false;
+        });
+    
+        // Clear the canvas
+        document.getElementById('clear-btn').addEventListener('click', () => {
+            context.clearRect(0, 0, canvas.width, canvas.height);
+        });
+    </script>
+
+</body>
+</html>

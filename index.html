@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://db.onlinewebfonts.com/c/97c4b25dc74e0ab045154e75a8fdd69d?family=Game+of+Thrones" rel="stylesheet">
+    <link rel="stylesheet" href="css/main.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/CustomEase.min.js"></script>
+    <title>MOS2K24</title>
+    <style>
+
+.slider-container {
+  position: relative;
+  top: 0;
+  left: 0;
+  height: 100%;
+}
+.slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: contain; /* Change to 'contain' to ensure the whole image fits */
+  background-repeat: no-repeat; /* Prevent repeating if the image doesn't fill the container */
+  background-position: center; /* Center the image */
+  opacity: 0;
+  will-change: opacity, transform;
+  z-index: 1;
+  transform-origin: center center;
+}
+
+.slide.active {
+  z-index: 2;
+}
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.2);
+  z-index: 3;
+  pointer-events: none;
+}
+.navigation {
+  position: relative; /* Change to relative positioning */
+  display: flex;
+  justify-content: center; /* Center the navigation horizontally */
+  bottom: 0; /* Keep it at the bottom of the parent container */
+  width: 100%; /* Ensure it spans the full width */
+  z-index: 10;
+}
+.nav-btn {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.4);
+  margin: 0 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.nav-btn.active {
+  background: white;
+  transform: scale(1.5);
+}
+@media (max-width: 768px) {
+    .slider img {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .slider img {
+        width: 100%;
+        height: auto;
+    }
+}
+.floating-header {
+  text-align: center; /* Center the text horizontally */
+  margin: 100px 0; /* Space between the navbar and slider */
+  position: relative;
+}
+
+.floating-header h1 {
+  color: #D4AF37; /* Gold color */
+  font-size: 2.5rem; /* Adjust font size */
+  font-family: 'Game of Thrones', sans-serif; /* Font style */
+  animation: float 3s ease-in-out infinite; /* Add floating animation */
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0); /* Start and end at the same position */
+  }
+  50% {
+    transform: translateY(-15px); /* Move up slightly */
+  }
+}
+.footer {
+  text-align: center;
+  background-color: black; /* Dark background for contrast */
+  color: #D4AF37; /* Gold text color */
+  padding: 10px 0;
+  font-size: 1rem;
+  position: relative; /* Keep the footer at the bottom of the viewport */
+  bottom: 0;
+  left: 0;
+  width: 100%;
+}
+
+
+          </style>
+    
+</head>
+<body>
+
+    
+    <nav id="navbar">
+        <a href="#" id="logo">
+            <img src="img/logo.png" alt="Logo" style="max-height: 50px;">
+        </a>
+        <div id="menu-toggle">&#9776;</div> <div id="nav-links">
+            <a href="#">Home</a>
+            <a href="registration.html">Registration</a>
+            <a href="#">OC Team</a>
+            <a href="#">Memories</a>
+        </div>
+        <div id="mobile-menu">
+            <a href="#">Home</a>
+            <a href="registration.html">Registration</a>
+            <a href="#">OC Team</a>
+            <a href="#">Memories</a>
+        </div>
+    </nav>
+    <div class="floating-header">
+        <h1>Welcome to MOS 2K24</h1>
+    </div>
+    <div class="slider-container">
+        <div class="slide" style="background-image: url('img/1.jpg')"></div>
+        <div class="slide" style="background-image: url('img/2.jpg')"></div>
+        <div class="slide" style="background-image: url('img/3.jpg')"></div>
+        <div class="slide" style="background-image: url('img/4.jpg')"></div>
+        <div class="slide" style="background-image: url('img/5.jpg')"></div>
+        <div class="slide" style="background-image: url('img/6.jpg')"></div>
+        <div class="slide" style="background-image: url('img/7.jpg')"></div>
+        <div class="slide" style="background-image: url('img/8.jpg')"></div>
+        <div class="slide" style="background-image: url('img/9.jpg')"></div>
+        <div class="slide" style="background-image: url('img/10.jpg')"></div>
+
+        <div class="overlay"></div>
+      </div>
+      
+      <div class="navigation"></div>
+      <footer class="footer">
+        <p>&copy; 2024 MOS 2K24 - All rights reserved</p>
+    </footer>
+      <script>
+        document.addEventListener("DOMContentLoaded", () => {
+      // Advanced Slider Configuration
+      const CONFIG = {
+        transitionDuration: 2, // longer, smoother transition
+        zoomIntensity: 1.05, // minimal zoom to prevent white space
+        autoAdvanceInterval: 5000
+      };
+    
+      // Create custom smooth ease
+      const smoothEase = CustomEase.create(
+        "professional",
+        "M0,0 C0.25,0.1 0.25,1 1,1"
+      );
+    
+      const sliderContainer = document.querySelector(".slider-container");
+      const slides = document.querySelectorAll(".slide");
+      const navigation = document.querySelector(".navigation");
+    
+      // Create navigation dots
+      slides.forEach((_, index) => {
+        const dot = document.createElement("div");
+        dot.classList.add("nav-btn");
+        if (index === 0) dot.classList.add("active");
+        dot.addEventListener("click", () => goToSlide(index));
+        navigation.appendChild(dot);
+      });
+    
+      const navBtns = document.querySelectorAll(".nav-btn");
+      let currentSlide = 0;
+      let isTransitioning = false;
+    
+      function createProfessionalTransition(oldSlide, newSlide) {
+        // Remove active states
+        slides.forEach((slide) => slide.classList.remove("active"));
+    
+        // Prepare timeline
+        const tl = gsap.timeline({
+          onComplete: () => {
+            isTransitioning = false;
+            newSlide.classList.add("active");
+          }
+        });
+    
+        // Professional dissolve transition with minimal scaling
+        tl.to(oldSlide, {
+          opacity: 0,
+          scale: CONFIG.zoomIntensity,
+          duration: CONFIG.transitionDuration,
+          ease: smoothEase
+        });
+    
+        tl.fromTo(
+          newSlide,
+          {
+            opacity: 0,
+            scale: CONFIG.zoomIntensity - 0.05 // Slight difference to prevent white space
+          },
+          {
+            opacity: 1,
+            scale: 1,
+            duration: CONFIG.transitionDuration,
+            ease: smoothEase
+          },
+          0 // Simultaneous transition
+        );
+    
+        return tl;
+      }
+    
+      function goToSlide(newIndex) {
+        // Prevent multiple transitions
+        if (isTransitioning || newIndex === currentSlide) return;
+    
+        isTransitioning = true;
+    
+        // Update navigation
+        navBtns[currentSlide].classList.remove("active");
+        navBtns[newIndex].classList.add("active");
+    
+        // Perform transition
+        createProfessionalTransition(slides[currentSlide], slides[newIndex]);
+    
+        currentSlide = newIndex;
+      }
+    
+      // Auto-advance functionality
+      function autoAdvance() {
+        let nextSlide = (currentSlide + 1) % slides.length;
+        goToSlide(nextSlide);
+      }
+    
+      // Initial setup
+      slides.forEach((slide, index) => {
+        gsap.set(slide, {
+          opacity: index === 0 ? 1 : 0,
+          scale: 1
+        });
+      });
+      slides[0].classList.add("active");
+    
+      // Start auto-advance
+      let autoAdvanceTimer = setInterval(autoAdvance, CONFIG.autoAdvanceInterval);
+    
+      // Keyboard navigation
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "ArrowRight") {
+          goToSlide((currentSlide + 1) % slides.length);
+        } else if (e.key === "ArrowLeft") {
+          goToSlide((currentSlide - 1 + slides.length) % slides.length);
+        }
+      });
+    
+      // Pause on hover
+      sliderContainer.addEventListener("mouseenter", () => {
+        clearInterval(autoAdvanceTimer);
+      });
+      sliderContainer.addEventListener("mouseleave", () => {
+        autoAdvanceTimer = setInterval(autoAdvance, CONFIG.autoAdvanceInterval);
+      });
+    });
+    
+      </script>
+
+    <script>
+        const menuToggle = document.getElementById('menu-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        menuToggle.addEventListener('click', () => {
+            mobileMenu.style.display = mobileMenu.style.display === 'block' ? 'none' : 'block';
+        });
+    </script>
+
+</body>
+</html>
