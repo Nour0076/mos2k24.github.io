@@ -168,46 +168,46 @@
     </script>
     <script>
         const form = document.getElementById('registration-form');
-        
-        form.addEventListener('submit', function (event) {
-            event.preventDefault(); // Prevent the form from submitting normally
-            
-            const formData = new FormData(form);
-            
-            // Convert form data into an object
-            const data = {
-                name: formData.get('name'),
-                email: formData.get('email'),
-                phone: formData.get('phone'),
-                emergencyPhone: formData.get('emergencyPhone'),
-                department: formData.get('department'),
-                allergy: formData.get('allergy'),
-                ocExpectation: formData.get('ocExpectation'),
-                faciExpectation: formData.get('faciExpectation'),
-                chairExpectation: formData.get('chairExpectation'),
-                freeSpace: formData.get('freeSpace'),
-               signature: document.getElementById('signature-pad').toDataURL()
 
-            };
-            
-            // Send the data to Google Apps Script using Fetch API
-            fetch('https://script.google.com/macros/s/AKfycbw49gEsU6Jj-XqpWw5qE6cEEGmrW4jd9e8R5bw_MMp7/dev', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
-            })
-            .then(response => response.text())
-            .then(result => {
-                alert('Form Submitted Successfully!');
-                form.reset();
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('There was an error submitting the form!');
-            });
-        });
+form.addEventListener('submit', function (event) {
+    event.preventDefault(); // Prevent the form from submitting normally
+    
+    const formData = new FormData(form);
+    
+    // Convert form data into an object
+    const data = {
+        name: formData.get('name'),
+        email: formData.get('email'),
+        phone: formData.get('phone'),
+        emergencyPhone: formData.get('emergencyPhone'),
+        department: formData.get('department'),  // Ensure department is sent correctly
+        allergy: formData.get('allergy'),
+        ocExpectation: formData.get('ocExpectation'),
+        faciExpectation: formData.get('faciExpectation'),
+        chairExpectation: formData.get('chairExpectation'),
+        freeSpace: formData.get('freeSpace'),
+        signature: document.getElementById('signature-pad').toDataURL() // Send signature as Data URL
+    };
+
+    // Send the data to Google Apps Script using Fetch API
+    fetch('https://script.google.com/macros/s/AKfycbw49gEsU6Jj-XqpWw5qE6cEEGmrW4jd9e8R5bw_MMp7/dev', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => response.text())
+    .then(result => {
+        alert('Form Submitted Successfully!');
+        form.reset();
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('There was an error submitting the form!');
+    });
+});
+
     </script>
 </body>
 </html>
