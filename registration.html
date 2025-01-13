@@ -30,7 +30,7 @@
     </nav>
     <main>
     <div id="form-container">
-        <form id="registration-form" method="POST">
+        <form id="registration-form">
             <div class="mb-3">
                 <label for="name" style="color: #b08d2a;" class="form-label">Name</label>
                 <input type="text" class="form-control" id="name" name="name" placeholder="Enter your name">
@@ -167,34 +167,35 @@
         });
     </script>
     <script>
-        const form = document.getElementById('registration-form');
+document.getElementById('registration-form').addEventListener('submit', async function (e) {
+  e.preventDefault();
 
-form.addEventListener('submit', function (event) {
-    event.preventDefault(); // Prevent the form from submitting normally
-    
-    const formData = new FormData(form);
-    
-    // Convert form data into an object
-    const data = {
-        name: formData.get('name'),
-        email: formData.get('email'),
-        phone: formData.get('phone'),
-        emergencyPhone: formData.get('emergencyPhone'),
-        department: formData.get('department'),  // Ensure department is sent correctly
-        allergy: formData.get('allergy'),
-        ocExpectation: formData.get('ocExpectation'),
-        faciExpectation: formData.get('faciExpectation'),
-        chairExpectation: formData.get('chairExpectation'),
-        freeSpace: formData.get('freeSpace'),
-        signature: document.getElementById('signature-pad').toDataURL() // Send signature as Data URL
-    };
+  const formData = new FormData(this);
+  const data = {};
+  
+  formData.forEach((value, key) => {
+    data[key] = value;
+  });
 
-    // Send the data to Google Apps Script using Fetch API
-    fetch('https://script.google.com/macros/s/AKfycbw49gEsU6Jj-XqpWw5qE6cEEGmrW4jd9e8R5bw_MMp7/dev', {
-    method: 'POST',
-    headers: {
+  try {
+    const response = await fetch('https://script.google.com/macros/s/AKfycbw49gEsU6Jj-XqpWw5qE6cEEGmrW4jd9e8R5bw_MMp7/dev', { // Replace with your Web App URL
+      method: 'POST',
+      headers: {
         'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+
+    const result = await response.json();
+    if (result.status === 'success') {
+      alert('Form submitted successfully!');
+    } else {
+      alert('Error submitting form!');
     }
+  } catch (error) {
+    console.error('Error:', error);
+    alert('Error submitting form!');
+  }
 });
 
     </script>
