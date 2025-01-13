@@ -194,18 +194,7 @@ form.addEventListener('submit', function (event) {
     method: 'POST',
     headers: {
         'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(data) // Ensure 'data' is a JSON object
-})
-.then(response => response.json())
-.then(result => {
-    alert('Form Submitted Successfully!');
-    form.reset();
-})
-.catch(error => {
-    console.error('Error:', error);
-    alert('There was an error submitting the form!');
-});
+    }
 });
 
     </script>
