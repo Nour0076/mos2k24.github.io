@@ -30,25 +30,25 @@
     </nav>
     <main>
     <div id="form-container">
-        <form>
+        <form id="registration-form">
             <div class="mb-3">
-            <label for="name" style="color: #b08d2a;" class="form-label">Name</label>
-                <input type="text" class="form-control" id="name" placeholder="Enter your name">
+                <label for="name" style="color: #b08d2a;" class="form-label">Name</label>
+                <input type="text" class="form-control" id="name" name="name" placeholder="Enter your name">
             </div>
             <div class="mb-3">
                 <label style="color: #b08d2a;" for="email" class="form-label">Email address</label>
-                <input type="email" class="form-control" id="email" placeholder="Enter your email">
+                <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email">
             </div>
             <div class="mb-3">
-                <label style="color: #b08d2a;" for="email" class="form-label">Phone Number</label>
-                <input type="email" class="form-control" id="email" placeholder="Enter your Phone Number">
+                <label style="color: #b08d2a;" for="phone" class="form-label">Phone Number</label>
+                <input type="text" class="form-control" id="phone" name="phone" placeholder="Enter your Phone Number">
             </div>
             <div class="mb-3">
-                <label style="color: #b08d2a;" for="email" class="form-label">Emergency Phone Number</label>
-                <input type="email" class="form-control" id="email" placeholder="Enter your Emergency Phone Number">
+                <label style="color: #b08d2a;" for="emergencyPhone" class="form-label">Emergency Phone Number</label>
+                <input type="text" class="form-control" id="emergencyPhone" name="emergencyPhone" placeholder="Enter your Emergency Phone Number">
             </div>
             <div class="mb-3">
-                <label style="color: #b08d2a;" for="subject" class="form-label">Departement</label>
+                <label style="color: #b08d2a;" for="subject" class="form-label">Department</label>
                 <div class="custom-select">
                     <div class="select-button" id="selectButton">Select</div>
                     <div class="select-options" id="selectOptions">
@@ -60,41 +60,42 @@
                         <div class="option" data-value="BD&EWA">BD&EWA</div>
                         <div class="option" data-value="TM">TM</div>
                     </div>
-                    <input type="hidden" id="selectedValue" name="subject" value="">
+                    <input type="hidden" id="selectedValue" name="department" value="">
                 </div>
             </div>
             <div class="mb-3">
-                <label style="color: #b08d2a;" for="email" class="form-label">Allergy</label>
-                <input type="email" class="form-control" id="email" placeholder="Enter your Allergy">
+                <label style="color: #b08d2a;" for="allergy" class="form-label">Allergy</label>
+                <input type="text" class="form-control" id="allergy" name="allergy" placeholder="Enter your Allergy">
             </div>
             <div class="mb-3">
-                <label style="color: #b08d2a;" for="email" class="form-label">OC Expectation</label>
-                <input type="email" class="form-control" id="email" placeholder="Enter OC Expectation">
+                <label style="color: #b08d2a;" for="ocExpectation" class="form-label">OC Expectation</label>
+                <input type="text" class="form-control" id="ocExpectation" name="ocExpectation" placeholder="Enter OC Expectation">
             </div>
             <div class="mb-3">
-                <label style="color: #b08d2a;" for="email" class="form-label">FACI Expectation</label>
-                <input type="email" class="form-control" id="email" placeholder="Enter FACI Expectation">
+                <label style="color: #b08d2a;" for="faciExpectation" class="form-label">FACI Expectation</label>
+                <input type="text" class="form-control" id="faciExpectation" name="faciExpectation" placeholder="Enter FACI Expectation">
             </div>
             <div class="mb-3">
-                <label style="color: #b08d2a;" for="email" class="form-label">Chair Expectation</label>
-                <input type="email" class="form-control" id="email" placeholder="Enter Chair Expectation">
+                <label style="color: #b08d2a;" for="chairExpectation" class="form-label">Chair Expectation</label>
+                <input type="text" class="form-control" id="chairExpectation" name="chairExpectation" placeholder="Enter Chair Expectation">
             </div>
             
             <div class="mb-3">
-                <label style="color: #b08d2a;" for="message" class="form-label">Free Space</label>
-                <textarea class="form-control" id="message" rows="5" placeholder="Enter your message"></textarea>
+                <label style="color: #b08d2a;" for="freeSpace" class="form-label">Free Space</label>
+                <textarea class="form-control" id="freeSpace" name="freeSpace" rows="5" placeholder="Enter your message"></textarea>
             </div>
             <div class="mb-3 form-check">
-                <input type="checkbox" class="form-check-input" id="terms">
+                <input type="checkbox" class="form-check-input" id="terms" name="terms">
                 <label style="color: white;" class="form-check-label" for="terms">I agree to the <a href="_Indemnity Form MOS 2k24.pdf" style="color:rgb(212, 175, 55); text-decoration: none;" target="_blank">Terms of Use</a></label>
             </div>
-            <label style="color: #b08d2a;" for="subject" class="form-label">Signature</label>
-            <div  id="signature-box">
+            <label style="color: #b08d2a;" for="signature" class="form-label">Signature</label>
+            <div id="signature-box">
                 <canvas id="signature-pad" width="400" height="200"></canvas>
                 <button id="clear-btn">Clear</button>
             </div>
             <button type="submit" class="btn btn-primary w-100">Submit</button>
         </form>
+        
     </div>
 </main>
 
@@ -165,6 +166,47 @@
             context.clearRect(0, 0, canvas.width, canvas.height);
         });
     </script>
-
+    <script>
+        const form = document.querySelector('registration-form');
+        
+        form.addEventListener('submit', function (event) {
+            event.preventDefault(); // Prevent the form from submitting normally
+            
+            const formData = new FormData(form);
+            
+            // Convert form data into an object
+            const data = {
+                name: formData.get('name'),
+                email: formData.get('email'),
+                phone: formData.get('phone'),
+                emergencyPhone: formData.get('emergencyPhone'),
+                department: formData.get('department'),
+                allergy: formData.get('allergy'),
+                ocExpectation: formData.get('ocExpectation'),
+                faciExpectation: formData.get('faciExpectation'),
+                chairExpectation: formData.get('chairExpectation'),
+                freeSpace: formData.get('freeSpace'),
+                signature: document.getElementById('signature-pad').toDataURL() // Get the signature as a base64 string
+            };
+            
+            // Send the data to Google Apps Script using Fetch API
+            fetch('YOUR_GOOGLE_APPS_SCRIPT_URL', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.text())
+            .then(result => {
+                alert('Form Submitted Successfully!');
+                form.reset();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('There was an error submitting the form!');
+            });
+        });
+    </script>
 </body>
 </html>
