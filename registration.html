@@ -190,22 +190,22 @@ form.addEventListener('submit', function (event) {
     };
 
     // Send the data to Google Apps Script using Fetch API
-    fetch('https://script.google.com/macros/s/AKfycbyvOstqzKelvQW52f3YuCjMgQ-g_yhs-G1Cc6VDEpnUVhRXPIkYsO8d79_qBrNE8m1iZQ/exec', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-    })
-    .then(response => response.text())
-    .then(result => {
-        alert('Form Submitted Successfully!');
-        form.reset();
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert('There was an error submitting the form!');
-    });
+    fetch('https://script.google.com/macros/s/AKfycbw49gEsU6Jj-XqpWw5qE6cEEGmrW4jd9e8R5bw_MMp7/dev', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data) // Ensure 'data' is a JSON object
+})
+.then(response => response.json())
+.then(result => {
+    alert('Form Submitted Successfully!');
+    form.reset();
+})
+.catch(error => {
+    console.error('Error:', error);
+    alert('There was an error submitting the form!');
+});
 });
 
     </script>
